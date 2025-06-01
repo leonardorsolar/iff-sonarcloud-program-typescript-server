@@ -362,3 +362,6 @@ No `package.json`, adicione a configuração do Jest:
 - **Tokens**: Configure os tokens `SONAR_TOKEN` nas variáveis de ambiente do seu CI/CD
 
 Essa configuração garante que o SonarCloud consiga analisar adequadamente seu código TypeScript compilado para Node.js.
+
+Automatic analysis:
+https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/automatic-analysis/?_gl=1*18tay96*_gcl_au*MTAyNTA1MTIzLjE3NDgwNTAzNzY.*_ga*MjA1MTUxMDczNy4xNzQ4MDUwMzc2*_ga_9JZ0GZ5TC6*czE3NDg3NzIxMzckbzMkZzEkdDE3NDg3NzI5MzAkajYwJGwwJGgw

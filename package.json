@@ -9,16 +9,7 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write .",
     "test": "jest --coverage",
-    "test:coverage": "jest --coverage"
-  },
-   "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "!src/**/*.test.ts",
-      "!src/**/*.spec.ts"
-    ],
+    "test:coverage": "jest --coverage",
     "coverageDirectory": "coverage",
     "coverageReporters": ["text", "lcov", "html"]
   },
