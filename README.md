@@ -55,7 +55,7 @@ git push -u origin main
 
 # Qualidade de Código com SonarQube
 
-# 🌊 PARTE 2 – Subir projeto TypeScript para o **SonarCloud com GitHub Actions**
+# 🌊 PARTE 2 – Subir projeto TypeScript para o **SonarCloud sem GitHub Actions**
 
 ## ✅ Etapa 1: Criar conta no SonarCloud
 
@@ -137,7 +137,12 @@ Alternativa recomendada para cobertura de testes
 Se você quiser cobertura de testes, a melhor prática é:
 Usar GitHub Actions ou outra ferramenta de CI.
 
-## ✅ Etapa 2: Método de Análise: ações do GitHub
+Automatic analysis doc:
+[Automatic analysis doc](https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/automatic-analysis/?_gl=1*18tay96*_gcl_au*MTAyNTA1MTIzLjE3NDgwNTAzNzY.*_ga*MjA1MTUxMDczNy4xNzQ4MDUwMzc2*_ga_9JZ0GZ5TC6*czE3NDg3NzIxMzckbzMkZzEkdDE3NDg3NzI5MzAkajYwJGwwJGgw)
+
+# 🌊 PARTE 3 – Subir projeto TypeScript para o **SonarCloud com GitHub Actions**
+
+## ✅ Etapa 1: Método de Análise: ações do GitHub
 
 Pegar o token do SonarCloud (Siga o assistente e copie o Token)
 
@@ -145,7 +150,7 @@ Pegar o token do SonarCloud (Siga o assistente e copie o Token)
 
 ---
 
-## ✅ Etapa 3: Adicionar o token no GitHub
+## ✅ Etapa 2: Adicionar o token no GitHub
 
 1. Acesse seu repositório no GitHub
 2. Vá em: `Settings` → `Secrets and variables` → `Actions` → **New repository secret**
@@ -155,7 +160,7 @@ Pegar o token do SonarCloud (Siga o assistente e copie o Token)
 
 ---
 
-## ✅ Etapa 4: Criar arquivo de configuração `sonar-project.properties`
+## ✅ Etapa 3: Criar arquivo de configuração `sonar-project.properties`
 
 Na raiz do projeto, crie um arquivo:
 
@@ -196,7 +201,7 @@ sonar.typescript.lcov.reportPaths=coverage/lcov.info
 
 ---
 
-## ✅ Etapa 5: Commit e push
+## ✅ Etapa 4: Commit e push
 
 ```bash
 git add .
@@ -204,7 +209,7 @@ git commit -m "Configuração do SonarCloud com GitHub Actions"
 git push origin main
 ```
 
-## ✅ Etapa 6: Criar o GitHub Action
+## ✅ Etapa 5: Criar o GitHub Action
 
 Crie o arquivo `.github/workflows/build.yml`:
 
@@ -236,7 +241,7 @@ jobs:
 
 ---
 
-## ✅ Etapa 7: Commit e push
+## ✅ Etapa 6: Commit e push
 
 ```bash
 git add .
@@ -246,7 +251,7 @@ git push origin main
 
 ---
 
-## ✅ Etapa 8: Verificar no GitHub e SonarCloud
+## ✅ Etapa 7: Verificar no GitHub e SonarCloud
 
 - Vá até o GitHub → **Actions**
 
@@ -362,6 +367,3 @@ No `package.json`, adicione a configuração do Jest:
 - **Tokens**: Configure os tokens `SONAR_TOKEN` nas variáveis de ambiente do seu CI/CD
 
 Essa configuração garante que o SonarCloud consiga analisar adequadamente seu código TypeScript compilado para Node.js.
-
-Automatic analysis:
-https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/automatic-analysis/?_gl=1*18tay96*_gcl_au*MTAyNTA1MTIzLjE3NDgwNTAzNzY.*_ga*MjA1MTUxMDczNy4xNzQ4MDUwMzc2*_ga_9JZ0GZ5TC6*czE3NDg3NzIxMzckbzMkZzEkdDE3NDg3NzI5MzAkajYwJGwwJGgw
