@@ -57,32 +57,87 @@ git push -u origin main
 
 # 🌊 PARTE 2 – Subir projeto TypeScript para o **SonarCloud com GitHub Actions**
 
----
-
 ## ✅ Etapa 1: Criar conta no SonarCloud
 
-1. Acesse: [https://sonarcloud.io](https://sonarcloud.io)
-   https://docs.sonarsource.com/sonarqube-cloud/
+documentação [https://sonarcloud.io](https://sonarcloud.io)
+https://docs.sonarsource.com/sonarqube-cloud/
+
+1. Acesse: [https://sonarcloud.io](https://sonarcloud.io/)
 2. Clique em **"Log in with GitHub"**
 3. Autorize o acesso ao GitHub
 4. Crie um projeto no SonarCloud:
-   - Clique em + no menu lateral > Analyze new project
+   - Clique em + no menu lateral > Analyze new project ou Analyze new project na tela
 5. Selecione seu repositório público do GitHub:
 
-- Clique em Import from a DevOps platform: Github e depois clique em configure
-- Clique em use github e autentique
-- Aparecerá uma tela do SonarQubeCloud, role até o final
-- Cliquem em select repositories. Selecione o repositório que você subiu: iff-sonarcloud-program-typescript-server
-- clique em save.
-- Clique novamente + Analyze new project, se necessário
+- Clique em Import from an organization Github
+- Em Install SonarQubeCloud, clique no nome prinicpal da sua organização do github
+- Aparecerá uma tela do SonarQubeCloud, Install & Authorize SonarQubeCloud
+- Cliquem em Only select repositories. Selecione o repositório que você subiu: iff-sonarcloud-program-typescript-server
 
-7. Escolha:
-   o nome do seu projeto: iff-sonarcloud-program-typescript-server
-8. Clique em **"Set Up"** ( configurar)
-9. Clique em previous version
-10. Cliquem em Create project
+6. Crie a organização:
+
+- Dê um nome para organização do github: leonardosolar
+- Dê um nome para sua key: leonardorsolarkey
+- Role a té o final da página
+- Selecione Select Free
+- Clique em Cretae Organization
+
+7. Analyze projects
+
+- Select repositories from one of your GitHub organization
+- Clique em Import another organization
+- Clique em Github
+- Cliquem no mome princiapla da sua organização do github, no meu caso: leonardosolar configure
+- Role até o final
+- Cliquem em Only select repositories. SeleVeja que já está secionado o repositório que você subiu: iff-sonarcloud-program-typescript-server. Se não tiver selecione
+- Clique em save
+
+7. Analisar projetos:
+   - Selecione o nome do seu projeto: iff-sonarcloud-program-typescript-server
+   - Clique em **"Set Up"** ( configurar)
+8. Clique em previous version e em Cliquem em Create project
+9. Estamos analisando seu projeto
 
 ---
+
+Método de Análise:
+Análise Automática
+Configurar análise por outros métodos:
+Com ações do GitHub
+
+## Método de Análise: Análise Automática
+
+Se você está usando o modo automático (Automatic Analysis) do SonarCloud (sem CI, sem GitHub Actions), e quer garantir que os testes sejam detectados e analisados corretamente, você pode configurar o arquivo .sonarcloud.properties no repositório raiz com as opções recomendadas para isso.
+
+- Crie ou edite o arquivo .sonarcloud.properties no diretório raiz do repositório.
+- Adicione os caminhos corretos para os testes e fontes, conforme a estrutura do seu projeto.
+
+```js
+# Caminho para os arquivos-fonte do projeto
+sonar.sources=src
+
+# Caminho para os testes (por exemplo, testes unitários)
+sonar.tests=test
+
+# Inclusões e exclusões opcionais
+# sonar.exclusions=**/*.spec.ts
+# sonar.test.exclusions=
+# sonar.test.inclusions=**/*Test.java
+
+# Codificação dos arquivos-fonte
+sonar.sourceEncoding=UTF-8
+
+# Excluir arquivos duplicados em análise de duplicação de código
+# sonar.cpd.exclusions=**/*.test.js
+
+```
+
+O modo automático do SonarCloud não executa os testes nem coleta cobertura automaticamente.
+Alternativa recomendada para cobertura de testes
+Se você quiser cobertura de testes, a melhor prática é:
+Usar GitHub Actions ou outra ferramenta de CI.
+
+## Método de Análise: ações do GitHub
 
 ## ✅ Etapa 2: Pegar o token do SonarCloud (Siga o assistente e copie o Token)
 
@@ -243,7 +298,6 @@ E aponte o `sonar.typescript.lcov.reportPaths=coverage/lcov.info` no `sonar-proj
 
 Se quiser, posso gerar um PDF ou README com tudo isso formatado. Deseja?
 
-
 Para configurar TypeScript em Node.js para funcionar com o SonarCloud, você precisa seguir alguns passos importantes:
 
 ## 1. Configurar o tsconfig.json
@@ -330,18 +384,18 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run tests with coverage
         run: npm run test:coverage
-        
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
