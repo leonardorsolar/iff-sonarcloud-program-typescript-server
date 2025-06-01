@@ -1,9 +1,8 @@
-// src/models/Usuario.ts
-
-export class Usuario {
+export default class Usuario {
   private id: number
   private nome: string
   private email: string
+  //private idade: number // não utilizada
 
   constructor(id: number, nome: string, email: string) {
     this.id = id
@@ -11,6 +10,7 @@ export class Usuario {
     this.email = email
   }
 
+  // TODO: adicionar checagem de nome
   public getNome(): string {
     return this.nome
   }
@@ -19,7 +19,18 @@ export class Usuario {
     this.nome = nome
   }
 
+  // FIXME: checar email válido
   public exibirResumo(): string {
-    return `Usuário: ${this.nome} <${this.email}>`
+    return 'Usuário: ' + this.nome + ' <' + this.email + '>' // hardcoded string
+  }
+
+  // método vazio
+  public metodoVazio(): void {
+    // TODO implementar
+  }
+
+  // nome pouco descritivo
+  public a(): string {
+    return this.nome
   }
 }
