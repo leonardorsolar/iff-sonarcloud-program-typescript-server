@@ -117,12 +117,12 @@ Se você está usando o modo automático (Automatic Analysis) do SonarCloud (sem
 sonar.sources=src
 
 # Caminho para os testes (por exemplo, testes unitários)
-sonar.tests=test
+sonar.tests=src/test
 
 # Inclusões e exclusões opcionais
 # sonar.exclusions=**/*.spec.ts
 # sonar.test.exclusions=
-# sonar.test.inclusions=**/*Test.java
+sonar.test.inclusions=**/*.test.ts
 
 # Codificação dos arquivos-fonte
 sonar.sourceEncoding=UTF-8
@@ -137,9 +137,9 @@ Alternativa recomendada para cobertura de testes
 Se você quiser cobertura de testes, a melhor prática é:
 Usar GitHub Actions ou outra ferramenta de CI.
 
-## Método de Análise: ações do GitHub
+## ✅ Etapa 2: Método de Análise: ações do GitHub
 
-## ✅ Etapa 2: Pegar o token do SonarCloud (Siga o assistente e copie o Token)
+Pegar o token do SonarCloud (Siga o assistente e copie o Token)
 
 1. Copie o token (guarde, não será mostrado de novo)
 
@@ -163,7 +163,7 @@ Na raiz do projeto, crie um arquivo:
 touch sonar-project.properties
 ```
 
-Conteúdo:
+Conteúdo: verificar a sua configuração
 
 ```properties
 sonar.projectKey=seu-usuario_nome-do-projeto
@@ -206,41 +206,30 @@ git push origin main
 
 ## ✅ Etapa 6: Criar o GitHub Action
 
-Crie o arquivo `.github/workflows/sonarcloud.yml`:
+Crie o arquivo `.github/workflows/build.yml`:
 
 ```yaml
-name: SonarCloud
-
+name: Build
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
-
 jobs:
-  build:
-    name: SonarCloud Scan
+  sonarqube:
+    name: SonarQube
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
-      - name: Instalar Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
         with:
-          node-version: '20'
-
-      - name: Instalar dependências
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Install dependencies
         run: npm install
-
-      - name: Rodar análise SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          args: >
-            -Dsonar.projectKey=seu-usuario_nome-do-projeto
-            -Dsonar.organization=seu-usuario
+      - name: Run tests with coverage
+        run: npm test -- --coverage --coverageReporters=lcov --coverageReporters=text
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 ```
@@ -363,67 +352,6 @@ No `package.json`, adicione a configuração do Jest:
     "coverageReporters": ["text", "lcov", "html"]
   }
 }
-```
-
-## 4. Configurar o GitHub Actions (se usando)
-
-Crie `.github/workflows/sonar.yml`:
-
-```yaml
-name: SonarCloud Analysis
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-
-jobs:
-  sonarcloud:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests with coverage
-        run: npm run test:coverage
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-```
-
-## 5. Dependências necessárias
-
-Instale as dependências de desenvolvimento:
-
-```bash
-npm install --save-dev typescript @types/node jest ts-jest @types/jest
-```
-
-## 6. Estrutura de diretórios recomendada
-
-```
-projeto/
-├── src/
-│   ├── index.ts
-│   └── **/*.ts
-├── dist/
-├── coverage/
-├── tsconfig.json
-├── sonar-project.properties
-├── package.json
-└── jest.config.js (opcional)
 ```
 
 ## Pontos importantes:
